@@ -83,16 +83,46 @@ public class Drawmap extends JPanel {
             			// TODO Auto-generated catch block
             			e.printStackTrace();
             		}
-            	}else if(map[linhas][coluna] == 'I'){
+            	}else if(map[linhas][coluna] == 'N'){
             		g.setColor(Color.YELLOW);
             		try {
-            			Image img = ImageIO.read(new File("images\\I.jpg"));
+            			Image img = ImageIO.read(new File("images\\N.jpg"));
             			g.drawImage(img, 20*linhas, 20*coluna, null);
             		} catch (IOException e) {
             			// TODO Auto-generated catch block
             			e.printStackTrace();
             		}
-            	}else if(map[linhas][coluna] == 'O'){
+            	}else if(map[linhas][coluna] == 'E'){
+            		g.setColor(Color.YELLOW);
+            		try {
+            			Image img = ImageIO.read(new File("images\\E.jpg"));
+            			g.drawImage(img, 20*linhas, 20*coluna, null);
+            		} catch (IOException e) {
+            			// TODO Auto-generated catch block
+            			e.printStackTrace();
+            		}
+            	}
+            	else if(map[linhas][coluna] == 'S'){
+            		g.setColor(Color.YELLOW);
+            		try {
+            			Image img = ImageIO.read(new File("images\\S.jpg"));
+            			g.drawImage(img, 20*linhas, 20*coluna, null);
+            		} catch (IOException e) {
+            			// TODO Auto-generated catch block
+            			e.printStackTrace();
+            		}
+            	}
+            	else if(map[linhas][coluna] == 'W'){
+            		g.setColor(Color.YELLOW);
+            		try {
+            			Image img = ImageIO.read(new File("images\\W.jpg"));
+            			g.drawImage(img, 20*linhas, 20*coluna, null);
+            		} catch (IOException e) {
+            			// TODO Auto-generated catch block
+            			e.printStackTrace();
+            		}
+            	}
+            	else if(map[linhas][coluna] == 'O'){
             		g.setColor(Color.YELLOW);
             		try {
             			Image img = ImageIO.read(new File("images\\O.jpg"));

@@ -30,22 +30,29 @@ public class Main {
 
 	public static void main(String[] args) throws IOException {
 		
+		loadDLL("C:/Program Files/swipl/bin/libwinpthread-1.dll");
+	    loadDLL("C:/Program Files/swipl/bin/libgcc_s_sjlj-1.dll");
+	    loadDLL("C:/Program Files/swipl/bin/libgmp-10.dll");
+	    loadDLL("C:/Program Files/swipl/bin/libswipl.dll");    
+	    loadDLL("C:/Program Files/swipl/bin/json.dll");
+	    loadDLL("C:/Program Files/swipl/bin/jpl.dll");
+		
 		boolean running = true;
 		double energia, arrow, score;
-		int X = 0, Y = 0;
+		int X = 0, Y = 0, Ox, Oy;
 		char[][] mapChar = (new Maploader()).getmap();
 		char[][] mapChar_back = (new Maploader()).getmap();
 		char[][] mapChar_astar = (new Maploader()).getmap();
 		int tempo = (int)System.currentTimeMillis();
 		String msg = null;
 		Vector<String> perception = new Vector<String>();
-		Vector<Pos> powerup = new Vector<Pos>(); 	//Posi��es powerup
-		Vector<Pos> position = new Vector<Pos>(); 	//Posi��es saferoom
-		Vector<Pos> postele = new Vector<Pos>(); 	//Posi��es possivelmente teletransporte
-		Vector<Pos> pospit = new Vector<Pos>();		 	//Posi��es possivelmente buracos
-		Vector<Pos> posenemy = new Vector<Pos>(); 		//Posi��es possivelmente inimigas
-		Vector<Pos> posmiscelania = new Vector<Pos>(); 	//Posi��es possivelmente casas com mais de uma percep��o
-		Vector<Pos> posini = new Vector<Pos>(); 		//Posi��es iniciais
+		Vector<Pos> powerup = new Vector<Pos>(); 	//Posices powerup
+		Vector<Pos> position = new Vector<Pos>(); 	//Posices saferoom
+		Vector<Pos> postele = new Vector<Pos>(); 	//Posices possivelmente teletransporte
+		Vector<Pos> pospit = new Vector<Pos>();		 	//Posices possivelmente buracos
+		Vector<Pos> posenemy = new Vector<Pos>(); 		//Posices possivelmente inimigas
+		Vector<Pos> posmiscelania = new Vector<Pos>(); 	//Posices possivelmente casas com mais de uma percep��o
+		Vector<Pos> posini = new Vector<Pos>(); 		//Posices iniciais
 		
 		Random gerador = new Random();
         int aleatorio = 0;
@@ -158,29 +165,24 @@ public class Main {
 				System.out.println("agent_X = " + Integer.parseInt(solution[0].get("X").toString()));
 				System.out.println("agent_Y = " + Integer.parseInt(solution[0].get("Y").toString()));
 				
-				/*
-				if(X<0 || X>=mapChar.length || Y<0 || Y>=mapChar.length){
-					q2 = new Query("ask_KB(X)");
-					solution = q2.allSolutions();
-					if(solution[0].get("X").toString().equals("rebound"))
-						System.out.println("Rebound " + (q2.hasSolution() ? "succeeded" : "failed"));
-					q2 = new Query("rebound");
-					solution = q2.allSolutions();
-					q2 = new Query("agent_location([X,Y])");
-					solution = q2.allSolutions();
-					X = Integer.parseInt(solution[0].get("X").toString()) - 1;
-					Y = mapChar_astar.length - Integer.parseInt(solution[0].get("Y").toString());
-				}
-				
-				System.out.println("X = " + X);
-				System.out.println("Y = " + Y);
-				*/
-				
 				//Atualiza Mapa Estrela
 				refreshmapstar(mapChar_astar, Y,  X);
 				
 				//Atualiza a posicao
-				mapChar[Y][X] = 'I';
+				
+				q2 = new Query("agent_orientation([X,Y])");
+				solution = q2.allSolutions();
+				Ox = Integer.parseInt(solution[0].get("X").toString());
+				Oy = Integer.parseInt(solution[0].get("Y").toString());
+				
+				if(Ox == 1)
+					mapChar[Y][X] = 'E';
+				else if(Ox == -1)
+					mapChar[Y][X] = 'W';
+				else if(Oy == 1)
+					mapChar[Y][X] = 'N';
+				else if(Oy == -1)
+					mapChar[Y][X] = 'S';
 				
 				
 				//Atualiza o mapa
@@ -210,7 +212,19 @@ public class Main {
 				System.out.println("Die " + (q2.hasSolution() ? "succeeded" : "failed"));
 				X = Integer.parseInt(solution[0].get("X").toString()) - 1;
 				Y = mapChar_back.length - Integer.parseInt(solution[0].get("Y").toString());
-				mapChar[Y][X] = 'I';
+				q2 = new Query("agent_orientation([X,Y])");
+				solution = q2.allSolutions();
+				Ox = Integer.parseInt(solution[0].get("X").toString());
+				Oy = Integer.parseInt(solution[0].get("Y").toString());
+				
+				if(Ox == 1)
+					mapChar[Y][X] = 'E';
+				else if(Ox == -1)
+					mapChar[Y][X] = 'W';
+				else if(Oy == 1)
+					mapChar[Y][X] = 'N';
+				else if(Oy == -1)
+					mapChar[Y][X] = 'S';
 				running = false;
 			}
 			
@@ -245,7 +259,19 @@ public class Main {
 				X = Integer.parseInt(solution[0].get("X").toString()) - 1;
 				Y = mapChar_back.length - Integer.parseInt(solution[0].get("Y").toString());
 				
-				mapChar[Y][X]='I';
+				q2 = new Query("agent_orientation([X,Y])");
+				solution = q2.allSolutions();
+				Ox = Integer.parseInt(solution[0].get("X").toString());
+				Oy = Integer.parseInt(solution[0].get("Y").toString());
+				
+				if(Ox == 1)
+					mapChar[Y][X] = 'E';
+				else if(Ox == -1)
+					mapChar[Y][X] = 'W';
+				else if(Oy == 1)
+					mapChar[Y][X] = 'N';
+				else if(Oy == -1)
+					mapChar[Y][X] = 'S';
 				
 			}
 			
@@ -296,7 +322,19 @@ public class Main {
 						//Atualiza Mapa Estrela
 						refreshmapstar(mapChar_astar, Y,  X);
 						
-						mapChar[Y][X] = 'I';
+						q2 = new Query("agent_orientation([X,Y])");
+						solution = q2.allSolutions();
+						Ox = Integer.parseInt(solution[0].get("X").toString());
+						Oy = Integer.parseInt(solution[0].get("Y").toString());
+						
+						if(Ox == 1)
+							mapChar[Y][X] = 'E';
+						else if(Ox == -1)
+							mapChar[Y][X] = 'W';
+						else if(Oy == 1)
+							mapChar[Y][X] = 'N';
+						else if(Oy == -1)
+							mapChar[Y][X] = 'S';
 						
 						q2 = new Query("agent_healthy(X)");
 						solution = q2.allSolutions();
@@ -371,7 +409,19 @@ public class Main {
 						//Atualiza Mapa Estrela
 						refreshmapstar(mapChar_astar, Y,  X);
 						
-						mapChar[Y][X] = 'I';
+						q2 = new Query("agent_orientation([X,Y])");
+						solution = q2.allSolutions();
+						Ox = Integer.parseInt(solution[0].get("X").toString());
+						Oy = Integer.parseInt(solution[0].get("Y").toString());
+						
+						if(Ox == 1)
+							mapChar[Y][X] = 'E';
+						else if(Ox == -1)
+							mapChar[Y][X] = 'W';
+						else if(Oy == 1)
+							mapChar[Y][X] = 'N';
+						else if(Oy == -1)
+							mapChar[Y][X] = 'S';
 						
 						q2 = new Query("agent_healthy(X)");
 						solution = q2.allSolutions();
@@ -456,7 +506,19 @@ public class Main {
 						//Atualiza Mapa Estrela
 						refreshmapstar(mapChar_astar, Y,  X);
 						
-						mapChar[Y][X] = 'I';
+						q2 = new Query("agent_orientation([X,Y])");
+						solution = q2.allSolutions();
+						Ox = Integer.parseInt(solution[0].get("X").toString());
+						Oy = Integer.parseInt(solution[0].get("Y").toString());
+						
+						if(Ox == 1)
+							mapChar[Y][X] = 'E';
+						else if(Ox == -1)
+							mapChar[Y][X] = 'W';
+						else if(Oy == 1)
+							mapChar[Y][X] = 'N';
+						else if(Oy == -1)
+							mapChar[Y][X] = 'S';
 						
 						q2 = new Query("agent_healthy(X)");
 						solution = q2.allSolutions();
@@ -544,7 +606,19 @@ public class Main {
 						//Atualiza Mapa Estrela
 						refreshmapstar(mapChar_astar, Y,  X);
 						
-						mapChar[Y][X] = 'I';
+						q2 = new Query("agent_orientation([X,Y])");
+						solution = q2.allSolutions();
+						Ox = Integer.parseInt(solution[0].get("X").toString());
+						Oy = Integer.parseInt(solution[0].get("Y").toString());
+						
+						if(Ox == 1)
+							mapChar[Y][X] = 'E';
+						else if(Ox == -1)
+							mapChar[Y][X] = 'W';
+						else if(Oy == 1)
+							mapChar[Y][X] = 'N';
+						else if(Oy == -1)
+							mapChar[Y][X] = 'S';
 						
 						q2 = new Query("agent_healthy(X)");
 						solution = q2.allSolutions();
@@ -630,7 +704,19 @@ public class Main {
 						//Atualiza Mapa Estrela
 						refreshmapstar(mapChar_astar, Y,  X);
 						
-						mapChar[Y][X] = 'I';
+						q2 = new Query("agent_orientation([X,Y])");
+						solution = q2.allSolutions();
+						Ox = Integer.parseInt(solution[0].get("X").toString());
+						Oy = Integer.parseInt(solution[0].get("Y").toString());
+						
+						if(Ox == 1)
+							mapChar[Y][X] = 'E';
+						else if(Ox == -1)
+							mapChar[Y][X] = 'W';
+						else if(Oy == 1)
+							mapChar[Y][X] = 'N';
+						else if(Oy == -1)
+							mapChar[Y][X] = 'S';
 						
 						q2 = new Query("agent_healthy(X)");
 						solution = q2.allSolutions();
@@ -692,7 +778,19 @@ public class Main {
 					//Atualiza Mapa Estrela
 					refreshmapstar(mapChar_astar, Y,  X);
 					
-					mapChar[Y][X] = 'I';
+					q2 = new Query("agent_orientation([X,Y])");
+					solution = q2.allSolutions();
+					Ox = Integer.parseInt(solution[0].get("X").toString());
+					Oy = Integer.parseInt(solution[0].get("Y").toString());
+					
+					if(Ox == 1)
+						mapChar[Y][X] = 'E';
+					else if(Ox == -1)
+						mapChar[Y][X] = 'W';
+					else if(Oy == 1)
+						mapChar[Y][X] = 'N';
+					else if(Oy == -1)
+						mapChar[Y][X] = 'S';
 					
 					q2 = new Query("agent_healthy(X)");
 					solution = q2.allSolutions();
@@ -775,7 +873,7 @@ public class Main {
 	
 	//Cria o arquivo map.pl
 	static void mkmappl(char [][] map) throws IOException{	 
-	    FileWriter arq = new FileWriter("trabalho2_map.pl");
+	    FileWriter arq = new FileWriter("prolog\\trabalho2_map.pl");
 	    PrintWriter gravarArq = new PrintWriter(arq);
 	    
 	    for(int i=0;i<map.length;i++){
