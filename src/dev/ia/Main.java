@@ -30,13 +30,6 @@ public class Main {
 
 	public static void main(String[] args) throws IOException {
 		
-		loadDLL("C:/Program Files/swipl/bin/libwinpthread-1.dll");
-	    loadDLL("C:/Program Files/swipl/bin/libgcc_s_sjlj-1.dll");
-	    loadDLL("C:/Program Files/swipl/bin/libgmp-10.dll");
-	    loadDLL("C:/Program Files/swipl/bin/libswipl.dll");    
-	    loadDLL("C:/Program Files/swipl/bin/json.dll");
-	    loadDLL("C:/Program Files/swipl/bin/jpl.dll");
-		
 		boolean running = true;
 		double energia, arrow, score;
 		int X = 0, Y = 0, Ox, Oy;
