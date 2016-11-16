@@ -26,11 +26,6 @@ act(grab) :-
 	is_powerup(L),	
 	!.	
 
-act(rebound) :-					% back at the last location
-	agent_goal(find_out),
-	agent_location(L),
-	is_wall(L),
-	!.
 	
 act(die) :- 
 	agent_goal(find_out),
@@ -70,17 +65,21 @@ act(astar_powerup):-
 	inf_equal(X,50),
 	!.
 
+
 act(forward) :-		
 	agent_goal(find_out),
 	location_ahead(L),		% this somewhere is just
 	good(L),				% the room in front of me.
 	no(is_wall(L)),
 	!.
-	
+		
 act(astar_saferoom):-
 	agent_goal(find_out),
 	is_saferoom(_),
 	!.
+
+
+	
 
 act(astar_teletransport):-
 	agent_goal(find_out),

@@ -11,11 +11,6 @@ public class Game {
 		display = new Display(title, width, height);
 	}
 	
-	public void printmap(char map[][],double energia,double custo,double arrow){
-		d.draw(map,energia,custo,arrow);
-		display.add(d);
-	}
-	
 	public void printmap(char map[][], char map2[][],double energia,double custo,double arrow){
 		d.draw(map,map2,energia,custo,arrow);
 		display.add(d);

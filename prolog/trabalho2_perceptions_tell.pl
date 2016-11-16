@@ -208,17 +208,14 @@ assume_saferoom(L).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 add_certain_enemy_KB :-
-	forall(certain_enemy(L),assume_certain_enemy(L)),
+	forall(is_enemy(L),assume_certain_enemy(L)),
 	!.
 add_certain_enemy_KB.
 
-certain_enemy(L):-
-	is_enemy(L),
-	enemy_location(_,_,L),
-	!.
 
 assume_certain_enemy(L):-
 	no(has_enemy(L)),
+	enemy_location(_,_,L),
 	diagonal(L,BL,BR,TL,TR),
 	saferoom_or_visited(BL,BR,TL,TR),
 	certain_saferoom(BL),
@@ -236,21 +233,26 @@ assume_certain_enemy(L):-
 	retractall(has_enemy(L)),
 	assert(has_enemy(L)),
 	!.
+assume_certain_enemy(L):-
+	no(has_pit(L)),
+	diagonal(L,BL,BR,TL,TR),
+	saferoom_or_visited(BL,BR,TL,TR),
+	retractall(is_enemy(L)),
+	retractall(is_saferoom(L)),
+	assert(is_saferoom(L)),
+	!.
 assume_certain_enemy(L).
 
 
 add_certain_pit_KB :-
-	forall(certain_pit(L),assume_certain_pit(L)),
+	forall(is_pit(L),assume_certain_pit(L)),
 	!.
 add_certain_pit_KB.
 
-certain_pit(L):-
-	is_pit(L),
-	pit_location(L),
-	!.
 
 assume_certain_pit(L):-
 	no(has_pit(L)),
+	pit_location(L),
 	diagonal(L,BL,BR,TL,TR),
 	saferoom_or_visited(BL,BR,TL,TR),
 	certain_saferoom(BL),
@@ -268,32 +270,51 @@ assume_certain_pit(L):-
 	retractall(has_pit(L)),
 	assert(has_pit(L)),
 	!.
+assume_certain_pit(L):-
+	no(has_pit(L)),
+	diagonal(L,BL,BR,TL,TR),
+	saferoom_or_visited(BL,BR,TL,TR),
+	retractall(is_pit(L)),
+	retractall(is_saferoom(L)),
+	assert(is_saferoom(L)),
+	!.
 assume_certain_pit(L).
 
 
 add_certain_teletransport_KB :-
-	forall(certain_teletransport(L),assume_certain_teletransport(L)),
+	forall(is_teletransport(L),assume_certain_teletransport(L)),
 	!.
 add_certain_teletransport_KB.
 
-certain_teletransport(L):-
-	is_teletransport(L),
-	teletransport_location(L),
-	!.
+
 
 assume_certain_teletransport(L):-
 	no(has_teletransport(L)),
+	teletransport_location(L),
 	diagonal(L,BL,BR,TL,TR),
 	saferoom_or_visited(BL,BR,TL,TR),
-	certain_saferoom(BL),certain_saferoom(BR),certain_saferoom(TL),certain_saferoom(TR),
-	
-	retractall(is_teletransport(BL)),retractall(is_teletransport(BR)),retractall(is_teletransport(TL)),retractall(is_teletransport(TR)),
+	certain_saferoom(BL),
+	certain_saferoom(BR),
+	certain_saferoom(TL),
+	certain_saferoom(TR),
+	retractall(is_teletransport(BL)),
+	retractall(is_teletransport(BR)),
+	retractall(is_teletransport(TL)),
+	retractall(is_teletransport(TR)),
 	retractall(is_enemy(L)),
 	retractall(is_pit(L)),
 	retractall(is_teletransport(L)),
 	retractall(is_saferoom(L)),
 	retractall(has_teletransport(L)),
 	assert(has_teletransport(L)),
+	!.
+assume_certain_teletransport(L):-
+	no(has_pit(L)),
+	diagonal(L,BL,BR,TL,TR),
+	saferoom_or_visited(BL,BR,TL,TR),
+	retractall(is_teletransport(L)),
+	retractall(is_saferoom(L)),
+	assert(is_saferoom(L)),
 	!.
 assume_certain_enemy(L).
 

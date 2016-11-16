@@ -179,17 +179,8 @@ public class Drawmap extends JPanel {
 		if(map2!=null){
 			for(int linhas=0; linhas < map2.length; linhas++){
 	            for(int coluna=0; coluna < map2[0].length; coluna++){
-	            	if(map2[linhas][coluna] == 'I'){
-	            		g.setColor(Color.YELLOW);
-	            		try {
-	            			Image img = ImageIO.read(new File("images\\I.jpg"));
-	            			g.drawImage(img, 20*linhas, 20*coluna, null);
-	            		} catch (IOException e) {
-	            			// TODO Auto-generated catch block
-	            			e.printStackTrace();
-	            		}
-	            	}
-	            	else if(map2[linhas][coluna] == 'L') {
+	            	
+	            	if(map2[linhas][coluna] == 'L') {
 	            		try {
 	            			Image img = ImageIO.read(new File("images\\L.jpg"));
 	            			g.drawImage(img, 20*linhas, 20*coluna+250, null);

@@ -1,8 +1,8 @@
 package dev.ia;
 
 public class Pos {
-	int x;
-	int y;
+	public int x;
+	public int y;
 
 	public Pos(int x, int y) {
 		this.x = x;

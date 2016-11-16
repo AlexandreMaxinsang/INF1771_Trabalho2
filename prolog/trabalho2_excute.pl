@@ -10,6 +10,37 @@ teletransport :-
 	retractall(agent_location(_)),
 	assert(agent_location([X,Y])),
 	!.
+		
+die :-
+	agent_location(L),
+	enemy_location(_,_,L),			
+	retractall(is_enemy(L)),	
+	assert(is_enemy(L)),		
+	agent_score(S),
+	score_agent_dead(SAD),
+	New_S is (S - SAD),
+	retractall(agent_score(_)),
+	assert(agent_score(New_S)),
+	retractall(agent_healthy(_)),
+	assert(agent_healthy(0)),
+	retractall(agent_in_cave),
+	!.
+		
+die :-	
+	agent_location(L),
+	pit_location(L),			
+	retractall(is_pit(L)),		
+	assert(is_pit(L)),			
+	agent_score(S),
+	score_agent_dead(SAD),
+	New_S is (S - SAD),
+	retractall(agent_score(_)),
+	assert(agent_score(New_S)),
+	retractall(agent_healthy(_)),
+	assert(agent_healthy(0)),
+	retractall(agent_in_cave),
+	!.
+	
 	
 grab :-
 	agent_location(L),
@@ -78,7 +109,6 @@ forward :-
 	location_toward(L,O,New_L),
 	retractall(agent_location(_)),
 	assert(agent_location(New_L)),
-	!,
 	update_state(New_L),
 	agent_score(S),
 	New_S is (S - 1),
@@ -129,36 +159,7 @@ turn([Xf,Yf]) :-
 	retractall(agent_score(_)),
 	assert(agent_score(New_S)),
 	!.	
-	
-die :-
-	agent_location(L),
-	enemy_location(_,_,L),			
-	retractall(is_enemy(L)),	
-	assert(is_enemy(L)),		
-	agent_score(S),
-	score_agent_dead(SAD),
-	New_S is (S - SAD),
-	retractall(agent_score(_)),
-	assert(agent_score(New_S)),
-	retractall(agent_healthy(_)),
-	assert(agent_healthy(0)),
-	retractall(agent_in_cave),
-	!.
-		
-die :-	
-	agent_location(L),
-	pit_location(L),			
-	retractall(is_pit(L)),		
-	assert(is_pit(L)),			
-	agent_score(S),
-	score_agent_dead(SAD),
-	New_S is (S - SAD),
-	retractall(agent_score(_)),
-	assert(agent_score(New_S)),
-	retractall(agent_healthy(_)),
-	assert(agent_healthy(0)),
-	retractall(agent_in_cave),
-	!.
+
 
 shoot :-						
 	agent_location(L),

@@ -123,12 +123,12 @@ wall_location([X,Y]) :- land_extent(LE), inf_equal(LE,Y).% there is wall
 
 good(L) :-				% a wall can be a good room !!!
     no(wall_location(L)),
+    no(is_visited(L)),
 	no(has_enemy(L)),
 	no(has_pit(L)),
 	no(has_teletransport(L)),
 	no(is_enemy(L)),
 	no(is_pit(L)),
 	no(is_teletransport(L)),
-	no(is_visited(L)),
 	!.
 	
